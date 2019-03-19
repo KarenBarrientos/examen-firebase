@@ -5,9 +5,13 @@ const ProductContext = React.createContext();
 
 class ProductProvider extends Component {
     state = {
-        products: [], detailProduct: detailProduct,
-        cart: [], modalOpen: false, modalProduct: detailProduct,
-        cartSubtotal: 0, cartTax: 0,
+        products: [],
+        // detailProduct: detailProduct,
+        cart: [],
+        modalOpen: false,
+        modalProduct: detailProduct,
+        cartSubtotal: 0,
+        cartTax: 0,
         cartTotal: 0
     };
 
@@ -25,11 +29,10 @@ class ProductProvider extends Component {
 
     setProducts = () => {
         let temp = [];
-        // XXX firebase
+
         storeProducts.forEach(item => {
             const singleItem = { ...item };
             temp = [...temp, singleItem];
-
         });
         this.setState(() => {
             return { products: temp }
