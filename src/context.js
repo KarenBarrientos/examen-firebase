@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { storeProducts, detailProduct } from './data';
+import { detailProduct } from './data';
+import firebase from './config/config';
 
 const ProductContext = React.createContext();
 
@@ -26,16 +27,22 @@ class ProductProvider extends Component {
         });
     };
 
+    componentWillUnmount() {
+        this.dbRefPeces.off('value', this.dbCallbackPeces);
+    }
 
     setProducts = () => {
-        let temp = [];
+        const temp = [];
 
-        storeProducts.forEach(item => {
-            const singleItem = { ...item };
-            temp = [...temp, singleItem];
-        });
-        this.setState(() => {
-            return { products: temp }
+        // peces
+        this.dbRefPeces = firebase.database().ref('/peces');
+        this.dbCallbackPeces = this.dbRefPeces.on('value', (snap) => {
+            const peces = snap.val();
+            for (let key in peces) {
+                const tempPez = { ...peces[key], ...{ id: key, inCart: false, count: 0, total: 0 } };
+                temp.push(tempPez);
+            }
+            this.setState({ products: temp });
         });
     };
 

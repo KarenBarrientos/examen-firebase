@@ -8,21 +8,8 @@ import Cart from './componentes/Cart/Cart';
 import Default from './componentes/Default';
 import {Switch, Route} from 'react-router-dom';
 import Modal from './componentes/Modal';
-import firebase from './config/config';
 
 class App extends Component {
-
-  componentDidMount() {
-      // peces
-      this.dbRefPeces = firebase.database().ref('/peces');
-      this.dbCallbackPeces = this.dbRefPeces.on('value', (snap) => {
-          console.log(snap.val());
-      });
-    }
-
-  componentWillUnmount() {
-      this.dbRefPeces.off('value', this.dbCallbackPeces);
-  }
 
   render() {
     return (
