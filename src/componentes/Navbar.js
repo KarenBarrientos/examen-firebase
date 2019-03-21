@@ -3,9 +3,46 @@ import logo from '../logo.svg';
 import { Link } from 'react-router-dom';
 import { ButtonContainer } from './Button';
 import styled from 'styled-components';
+import Login from './Login';
+import { logout } from '../config/auth';
+import { firebaseAuth } from '../config/config';
 
 export default class Navbar extends Component {
+    state = {
+        authed: false,
+        loading: true
+    };
+
+    componentDidMount() {
+        this.removeListener = firebaseAuth().onAuthStateChanged(user => {
+          if (user) {
+            this.setState({
+              authed: true,
+              loading: false
+            });
+          } else {
+            this.setState({
+              authed: false,
+              loading: false
+            });
+          }
+        });
+    }
+    
+    componentWillUnmount() {
+        this.removeListener();
+    }
+
     render() {
+
+        const botonLogout = (
+            <ButtonContainer onClick={logout}>
+                <span className="ml-2 ">
+                    <i className="fas fa-sign-out-alt" />
+                </span>
+                Logout
+            </ButtonContainer>
+        );
 
         return (
             <NavWrapper className="navbar navbar-expand-sm navbar-dark px-sm-5">
@@ -30,15 +67,12 @@ export default class Navbar extends Component {
                         </span>
                         Carrito
                     </ButtonContainer>
-                    <span className="ml-5">
-                        <i className="fas fa-search"></i>
-                    </span>
                 </Link>
+                {this.state.authed ? botonLogout : <Login />}
+                <span className="ml-5">
+                    <i className="fas fa-search"></i>
+                </span>
             </NavWrapper>
-
-
-
-
         );
     }
 }
