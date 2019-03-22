@@ -9,7 +9,7 @@ class ProductProvider extends Component {
         products: [],
         // detailProduct: detailProduct,
         cart: [],
-        modalOpen: false,
+        modalOpen: true,
         modalProduct: detailProduct,
         cartSubtotal: 0,
         cartTax: 0,
@@ -61,7 +61,7 @@ class ProductProvider extends Component {
         product.total = price;
         this.setState(
             () => {
-                return { products: tempProducts, cart: [...this.state.cart, product] };
+                return { products: tempProducts, cart:[...this.state.cart, product] };
             }, () => { this.addTotals(); }
         );
     };
